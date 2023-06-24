@@ -5,7 +5,7 @@ const LOG = new Logger('database.ts');
 const {
   DB_HOST = 'localhost',
   DB_PORT = '33306',
-  DB_SCHEMA = 'teacher-administration-system',
+  DB_SCHEMA = 'TAS',
   DB_USER = 'root',
   DB_PW = 'password',
   DB_POOL_ACQUIRE = '30000',

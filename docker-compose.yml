@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   db:
-    container_name: teacher-administration-system-mysql
+    container_name: tas-mysql
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -13,9 +13,14 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d:ro
   app:
-    container_name: teacher-administration-system-app
+    container_name: tas-app
     image: app
     depends_on:
       - db
-    build: .
+    restart: always
     env_file: ./.env
+    volumes:
+      - ./:/Users/javierteo/Documents/Projects/interview-package-ts-pg
+      - ignore:/Users/javierteo/Documents/Projects/interview-package-ts-pg
+volumes:
+  ignore:

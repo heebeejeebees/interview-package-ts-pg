@@ -6,7 +6,8 @@
       "noImplicitAny": true,
       "moduleResolution": "node",
       "sourceMap": true,
-      "outDir": "build",
+      "rootDir": "./src",
+      "outDir": "./build",
       "baseUrl": ".",
       "paths": {
           "*": [

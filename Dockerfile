@@ -1,6 +1,16 @@
 FROM node:14
+WORKDIR /Users/javierteo/Documents/Projects/interview-package-ts-pg
 
-WORKDIR /
-COPY package.json .
-RUN npm install
-COPY . .
+COPY package.json ./
+RUN npm install && npm cache clean --force
+ENV PATH=/Users/javierteo/Documents/Projects/interview-package-ts-pg/node_modules/.bin:$PATH
+
+WORKDIR /Users/javierteo/Documents/Projects/interview-package-ts-pg/src
+COPY .eslintrc ./
+COPY jest.config.json ./
+COPY tsconfig.json ./
+
+COPY src ./src
+COPY .env ./
+
+CMD ["npm", "run", "start"]

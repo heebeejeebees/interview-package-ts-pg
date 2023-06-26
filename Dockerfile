@@ -6,7 +6,6 @@ RUN npm install && npm cache clean --force
 ENV PATH=/Users/javierteo/Documents/Projects/interview-package-ts-pg/node_modules/.bin:$PATH
 
 WORKDIR /Users/javierteo/Documents/Projects/interview-package-ts-pg/src
-COPY .eslintrc ./
 COPY jest.config.json ./
 COPY tsconfig.json ./
 

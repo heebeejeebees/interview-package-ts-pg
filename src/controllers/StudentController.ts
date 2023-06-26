@@ -1,15 +1,23 @@
-import Express, { RequestHandler } from 'express';
+import Express, { RequestHandler, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import ErrorBase from '../errors/ErrorBase';
 import StudentService from '../services/StudentService';
 
 const StudentController = Express.Router();
 
-const registerStudentHandler: RequestHandler = async (req, res) => {
-  const success = StudentService.registerStudent(req.body);
+const registerStudentHandler: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  await StudentService.registerStudent(req.body)
+    .then(() => res.sendStatus(StatusCodes.OK))
+    .catch((e) => {
+      if (e instanceof ErrorBase) {
+        return res.json(e);
+      }
+    });
+};
 
-  return res.sendStatus(success ? StatusCodes.OK : StatusCodes.BAD_REQUEST);
-}
-
-StudentController.get('/register', registerStudentHandler);
+StudentController.post('/register', registerStudentHandler);
 
 export default StudentController;

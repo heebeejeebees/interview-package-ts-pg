@@ -1,5 +1,59 @@
-import { RegisterStudentRes } from "./types";
+import { RegisterStudentReq } from './types';
+import sequelize from '../config/database';
+import { QueryTypes } from 'sequelize';
+import { validateEmail } from '../validators/string';
+import Logger from '../config/logger';
+import ErrorBase from '../errors/ErrorBase';
+import { StatusCodes } from 'http-status-codes';
+import ErrorCodes from '../const/ErrorCodes';
 
-const registerStudent = (rtx: RegisterStudentRes): boolean => true;
+const LOG = new Logger('StudentService.ts');
 
-export default {registerStudent};
+const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
+  LOG.info('registerStudent ctx: ' + JSON.stringify(ctx));
+
+  const invalidEmails: string[] = [];
+  const existingEmails: string[] = [];
+
+  if (!validateEmail(ctx.teacher)) {
+    throw new ErrorBase(
+      `Invalid teacher email provided: ${ctx.teacher}`,
+      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+
+  // TODO: get teacher id
+  const [results, metadata] = await sequelize.query(
+    `SELECT ID FROM Teacher WHERE EMAIL = '${ctx.teacher}' ORDER BY CREATEDAT LIMIT 1`
+  );
+
+  console.log('results: ', JSON.stringify(results[0]));
+  console.log('metadata: ', metadata);
+
+  ctx.students.forEach(async (email) => {
+    if (!validateEmail(email)) {
+      invalidEmails.push(email);
+      return;
+    }
+    // TODO: check if student and relation exists
+    await sequelize.query(
+      `INSERT INTO Student (EMAIL)
+      VALUES ('${email}')`,
+      {
+        type: QueryTypes.INSERT,
+      }
+    );
+    // TODO: insert teacher-student relation
+  });
+
+  if (invalidEmails.length > 0 || existingEmails.length > 0) {
+    throw new ErrorBase(
+      'Invalid student email(s) provided: ' + invalidEmails.toString(),
+      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+};
+
+export default { registerStudent };

@@ -3,10 +3,11 @@ class ErrorBase extends Error {
   private httpStatusCode: number;
 
   constructor(message: string, errorCode: number, httpStatusCode: number) {
-    super(message);
+    super();
 
     this.errorCode = errorCode;
     this.httpStatusCode = httpStatusCode;
+    this.message = message;
   }
 
   public getMessage(): string {

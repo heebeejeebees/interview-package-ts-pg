@@ -19,6 +19,7 @@ services:
       - db
     restart: always
     env_file: ./.env
+    build: .
     volumes:
       - ./:/Users/javierteo/Documents/Projects/interview-package-ts-pg
       - ignore:/Users/javierteo/Documents/Projects/interview-package-ts-pg

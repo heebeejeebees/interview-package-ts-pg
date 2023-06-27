@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import ErrorCodes from '../const/ErrorCodes';
-import ErrorBase from '../errors/ErrorBase';
+import AppError from '../errors/AppError';
 import { ErrorRequestHandler } from 'express';
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
@@ -11,16 +11,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // Handling of body-parser content malformed error
   if (err.type === 'entity.parse.failed') {
     return res.status(StatusCodes.BAD_REQUEST).send({
-      errorCode: ErrorCodes.MALFORMED_JSON_ERROR_CODE,
       message: 'Malformed json',
     });
   }
 
-  if (err instanceof ErrorBase) {
+  if (err instanceof AppError) {
     const error = err;
 
     return res.status(error.getHttpStatusCode()).send({
-      errorCode: error.getErrorCode(),
       message: error.getMessage(),
     });
   } else {

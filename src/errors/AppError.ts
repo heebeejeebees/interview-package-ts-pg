@@ -1,11 +1,9 @@
-class ErrorBase extends Error {
-  private errorCode: number;
+class AppError extends Error {
   private httpStatusCode: number;
 
-  constructor(message: string, errorCode: number, httpStatusCode: number) {
+  constructor(message: string, httpStatusCode: number) {
     super();
 
-    this.errorCode = errorCode;
     this.httpStatusCode = httpStatusCode;
     this.message = message;
   }
@@ -14,13 +12,9 @@ class ErrorBase extends Error {
     return this.message;
   }
 
-  public getErrorCode(): number {
-    return this.errorCode;
-  }
-
   public getHttpStatusCode(): number {
     return this.httpStatusCode;
   }
 }
 
-export default ErrorBase;
+export default AppError;

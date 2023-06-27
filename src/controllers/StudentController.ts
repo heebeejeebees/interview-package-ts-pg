@@ -1,6 +1,6 @@
 import Express, { RequestHandler, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import ErrorBase from '../errors/ErrorBase';
+import AppError from '../errors/AppError';
 import StudentService from '../services/StudentService';
 
 const StudentController = Express.Router();
@@ -10,13 +10,14 @@ const registerStudentHandler: RequestHandler = async (
   res: Response
 ) => {
   // TODO: timeout
-  await StudentService.registerStudent(req.body)
-    .then(() => res.sendStatus(StatusCodes.OK))
-    .catch((e) => {
-      if (e instanceof ErrorBase) {
-        return res.json(e);
-      }
-    });
+  try {
+    await StudentService.registerStudent(req.body);
+    return res.sendStatus(StatusCodes.OK);
+  } catch (e) {
+    if (e instanceof AppError) {
+      return res.json(e);
+    }
+  }
 };
 
 StudentController.post('/register', registerStudentHandler);

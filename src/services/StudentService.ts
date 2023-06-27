@@ -3,9 +3,8 @@ import sequelize, { Teacher } from '../config/database';
 import { QueryTypes } from 'sequelize';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
-import ErrorBase from '../errors/ErrorBase';
+import AppError from '../errors/AppError';
 import { StatusCodes } from 'http-status-codes';
-import ErrorCodes from '../const/ErrorCodes';
 
 const LOG = new Logger('StudentService.ts');
 
@@ -16,9 +15,8 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
   const existingEmails: string[] = [];
 
   if (!validateEmail(ctx.teacher)) {
-    throw new ErrorBase(
+    throw new AppError(
       `Invalid teacher email provided: ${ctx.teacher}`,
-      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
       StatusCodes.BAD_REQUEST
     );
   }
@@ -28,9 +26,8 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
   } = await Teacher.findOne({ where: { email: ctx.teacher } });
 
   if (!teacherId) {
-    throw new ErrorBase(
+    throw new AppError(
       `Teacher does not exist: ${ctx.teacher}`,
-      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
       StatusCodes.BAD_REQUEST
     );
   }
@@ -52,9 +49,8 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
   });
 
   if (invalidEmails.length > 0 || existingEmails.length > 0) {
-    throw new ErrorBase(
+    throw new AppError(
       'Invalid student email(s) provided: ' + invalidEmails.toString(),
-      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
       StatusCodes.BAD_REQUEST
     );
   }

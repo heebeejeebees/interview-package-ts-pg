@@ -1,5 +1,5 @@
 import { RegisterStudentReq } from './types';
-import sequelize, { Teacher } from '../config/database';
+import sequelize, { Student, Teacher } from '../config/database';
 import { QueryTypes } from 'sequelize';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
@@ -12,7 +12,6 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
   LOG.info('registerStudent ctx: ' + JSON.stringify(ctx));
 
   const invalidEmails: string[] = [];
-  const existingEmails: string[] = [];
 
   if (!validateEmail(ctx.teacher)) {
     throw new AppError(
@@ -32,12 +31,44 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
     );
   }
 
-  ctx.students.forEach(async (email) => {
+  const existingTeacherStudents = await Teacher.findAll({
+    include: {
+      model: Student,
+      required: true,
+      where: {
+        email: ctx.students,
+      },
+    },
+  });
+
+  let filteredStudentsEmail: string[] = [];
+
+  if (existingTeacherStudents.length > 0) {
+    const existingStudentEmails: string[] = [];
+    existingTeacherStudents.forEach((teacherStudent) => {
+      const existingStudentEmail = teacherStudent.dataValues.student.email;
+      existingStudentEmails.push(existingStudentEmail);
+      filteredStudentsEmail = ctx.students.filter(
+        (e) => e !== existingStudentEmail
+      );
+    });
+    throw new AppError(
+      `Student(s) ${existingStudentEmails.toString()} is already under ${
+        ctx.teacher
+      }`,
+      StatusCodes.BAD_REQUEST
+    );
+  } else {
+    filteredStudentsEmail = ctx.students;
+  }
+
+  filteredStudentsEmail.forEach(async (email) => {
     if (!validateEmail(email)) {
       invalidEmails.push(email);
       return;
     }
-    // TODO: check if student and relation exists
+
+    // TODO: use model and insert teacher-student relation also
     await sequelize.query(
       `INSERT INTO Student (EMAIL)
       VALUES ('${email}')`,
@@ -45,15 +76,16 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
         type: QueryTypes.INSERT,
       }
     );
-    // TODO: insert teacher-student relation
   });
 
-  if (invalidEmails.length > 0 || existingEmails.length > 0) {
+  if (invalidEmails.length > 0) {
     throw new AppError(
       'Invalid student email(s) provided: ' + invalidEmails.toString(),
       StatusCodes.BAD_REQUEST
     );
   }
+
+  // TODO: revisit above code sequence
 };
 
 export default { registerStudent };

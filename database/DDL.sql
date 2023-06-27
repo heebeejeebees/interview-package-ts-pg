@@ -31,8 +31,8 @@ CREATE TABLE StudentTeacherRelation(
 );
 
 -- init data
-INSERT INTO Student (ID, Email) VALUES (1, 'common_student@gmail.com');
-INSERT INTO Student (ID, Email) VALUES (2, 'common_student@gmail.com');
+INSERT INTO Student (ID, Email) VALUES (1, 'common_student1@gmail.com');
+INSERT INTO Student (ID, Email) VALUES (2, 'common_student2@gmail.com');
 INSERT INTO Teacher (ID, Email) VALUES (1, 'teacher_bob@moe.edu.sg');
 INSERT INTO Teacher (ID, Email) VALUES (2, 'teacher_agnes@moe.edu.sg');
 

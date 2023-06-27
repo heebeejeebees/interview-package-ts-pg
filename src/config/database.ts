@@ -83,25 +83,30 @@ const Teacher = sequelize.define(
   { freezeTableName: true }
 );
 
-const StudentTeacherRelation = sequelize.define('StudentTeacherRelation', {
-  studentId: {
-    field: 'StudentID',
-    type: DataTypes.INTEGER,
-    references: {
-      model: Student,
-      key: 'ID',
+const StudentTeacherRelation = sequelize.define(
+  'StudentTeacherRelation',
+  {
+    studentId: {
+      field: 'StudentID',
+      type: DataTypes.INTEGER,
+      references: {
+        model: Student,
+        key: 'ID',
+      },
+    },
+    teacherId: {
+      field: 'TeacherID',
+      type: DataTypes.INTEGER,
+      references: {
+        model: Teacher,
+        key: 'ID',
+      },
     },
   },
-  teacherId: {
-    field: 'TeacherID',
-    type: DataTypes.INTEGER,
-    references: {
-      model: Teacher,
-      key: 'ID',
-    },
-  },
-});
+  { freezeTableName: true }
+);
 
+// TODO: add unique constraint for all `email`s?
 Student.belongsToMany(Teacher, { through: StudentTeacherRelation });
 Teacher.belongsToMany(Student, { through: StudentTeacherRelation });
 

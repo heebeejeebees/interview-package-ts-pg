@@ -128,8 +128,3 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-
-# env-only
-docker-compose.yml
-Dockerfile
-package-lock.json

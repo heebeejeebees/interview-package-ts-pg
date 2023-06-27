@@ -5,11 +5,10 @@
   "scripts": {
     "test": "jest",
     "build:ts": "tsc",
-    "prestart": "npm run start:watch",
+    "prestart": "npm run start:services",
     "start": "ts-node ./src/server.ts",
     "prestart:dev": "npm run start:services",
-    "start:watch": "nodemon -r dotenv/config src/server.ts",
-    "start:services": "docker-compose up -d",
+    "start:services": "docker-compose up -d && nodemon -r dotenv/config src/server.ts",
     "lint": "eslint \"src/**/*.ts\""
   },
   "license": "ISC",

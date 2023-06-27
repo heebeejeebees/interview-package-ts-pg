@@ -132,3 +132,4 @@ dist
 # env-only
 docker-compose.yml
 Dockerfile
+package-lock.json

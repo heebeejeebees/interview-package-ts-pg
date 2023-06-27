@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import Logger from './logger';
 
 const LOG = new Logger('database.ts');
@@ -31,4 +31,79 @@ const sequelize = new Sequelize(DB_SCHEMA, DB_USER, DB_PW, {
   },
 });
 
+const Student = sequelize.define(
+  'Student',
+  {
+    id: {
+      field: 'ID',
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
+    email: {
+      field: 'Email',
+      type: DataTypes.STRING,
+    },
+    status: {
+      field: 'Status',
+      type: DataTypes.ENUM('Active', 'Suspended'),
+    },
+    createdAt: {
+      field: 'CreatedAt',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'UpdatedAt',
+      type: DataTypes.DATE,
+    },
+  },
+  { freezeTableName: true }
+);
+
+const Teacher = sequelize.define(
+  'Teacher',
+  {
+    id: {
+      field: 'ID',
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+    },
+    email: {
+      field: 'Email',
+      type: DataTypes.STRING,
+    },
+    createdAt: {
+      field: 'CreatedAt',
+      type: DataTypes.DATE,
+    },
+    updatedAt: {
+      field: 'UpdatedAt',
+      type: DataTypes.DATE,
+    },
+  },
+  { freezeTableName: true }
+);
+
+const StudentTeacherRelation = sequelize.define('StudentTeacherRelation', {
+  studentId: {
+    field: 'StudentID',
+    type: DataTypes.INTEGER,
+    references: {
+      model: Student,
+      key: 'ID',
+    },
+  },
+  teacherId: {
+    field: 'TeacherID',
+    type: DataTypes.INTEGER,
+    references: {
+      model: Teacher,
+      key: 'ID',
+    },
+  },
+});
+
+Student.belongsToMany(Teacher, { through: StudentTeacherRelation });
+Teacher.belongsToMany(Student, { through: StudentTeacherRelation });
+
+export { Student, Teacher };
 export default sequelize;

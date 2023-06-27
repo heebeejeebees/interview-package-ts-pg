@@ -9,6 +9,7 @@ const registerStudentHandler: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
+  // TODO: timeout
   await StudentService.registerStudent(req.body)
     .then(() => res.sendStatus(StatusCodes.OK))
     .catch((e) => {

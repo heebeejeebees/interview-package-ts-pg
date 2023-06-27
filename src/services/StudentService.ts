@@ -1,5 +1,5 @@
 import { RegisterStudentReq } from './types';
-import sequelize from '../config/database';
+import sequelize, { Teacher } from '../config/database';
 import { QueryTypes } from 'sequelize';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
@@ -23,13 +23,17 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<void> => {
     );
   }
 
-  // TODO: get teacher id
-  const [results, metadata] = await sequelize.query(
-    `SELECT ID FROM Teacher WHERE EMAIL = '${ctx.teacher}' ORDER BY CREATEDAT LIMIT 1`
-  );
+  const {
+    dataValues: { id: teacherId },
+  } = await Teacher.findOne({ where: { email: ctx.teacher } });
 
-  console.log('results: ', JSON.stringify(results[0]));
-  console.log('metadata: ', metadata);
+  if (!teacherId) {
+    throw new ErrorBase(
+      `Teacher does not exist: ${ctx.teacher}`,
+      ErrorCodes.MALFORMED_JSON_ERROR_CODE,
+      StatusCodes.BAD_REQUEST
+    );
+  }
 
   ctx.students.forEach(async (email) => {
     if (!validateEmail(email)) {

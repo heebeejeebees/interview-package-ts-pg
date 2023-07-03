@@ -11,8 +11,8 @@ const registerStudentHandler: RequestHandler = async (
 ) => {
   // TODO: timeout
   try {
-    await StudentService.registerStudent(req.body);
-    return res.sendStatus(StatusCodes.OK);
+    const result = await StudentService.registerStudent(req.body);
+    return res.sendStatus(result ? StatusCodes.OK : StatusCodes.BAD_REQUEST);
   } catch (e) {
     if (e instanceof AppError) {
       return res.json(e);

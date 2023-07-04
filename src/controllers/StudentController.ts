@@ -1,18 +1,44 @@
 import Express, { RequestHandler, Request, Response } from 'express';
+import { ParsedQs } from 'qs';
 import { StatusCodes } from 'http-status-codes';
 import AppError from '../errors/AppError';
 import StudentService from '../services/StudentService';
 
 const StudentController = Express.Router();
 
+// TODO: timeout
 const registerStudentHandler: RequestHandler = async (
   req: Request,
   res: Response
 ) => {
-  // TODO: timeout
   try {
-    const result = await StudentService.registerStudent(req.body);
-    return res.sendStatus(result ? StatusCodes.OK : StatusCodes.BAD_REQUEST);
+    return res.sendStatus(
+      (await StudentService.registerStudent(req.body))
+        ? StatusCodes.OK
+        : StatusCodes.BAD_REQUEST
+    );
+  } catch (e) {
+    if (e instanceof AppError) {
+      return res.json(e);
+    }
+  }
+};
+
+const retrieveStudentHandler: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  // handle express query type
+  let emails: string[] | undefined;
+  if (req.query.teacher === undefined) {
+    // do nothing
+  } else if (Array.isArray(req.query.teacher)) {
+    emails = req.query.teacher.map((q: string | ParsedQs) => q.toString());
+  } else {
+    emails = [req.query.teacher.toString()];
+  }
+  try {
+    return res.send(await StudentService.retrieveStudent(emails));
   } catch (e) {
     if (e instanceof AppError) {
       return res.json(e);
@@ -21,5 +47,6 @@ const registerStudentHandler: RequestHandler = async (
 };
 
 StudentController.post('/register', registerStudentHandler);
+StudentController.get('/commonstudents', retrieveStudentHandler);
 
 export default StudentController;

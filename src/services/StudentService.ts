@@ -1,4 +1,4 @@
-import { RegisterStudentReq } from './types';
+import { RegisterStudentReq, RetrieveStudentRes } from './types';
 import { Student, Teacher, StudentTeacherRelation } from '../config/database';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
@@ -15,7 +15,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<boolean> => {
       console.log('email: ', email);
       if (!validateEmail(email)) {
         throw new AppError(
-          `Invalid email(s) provided: ${email}`,
+          `Invalid email provided: ${email}`,
           StatusCodes.BAD_REQUEST
         );
       }
@@ -27,7 +27,9 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<boolean> => {
 
   // check if teacher doesn't exist
   if (teacher === null) {
-    LOG.error('ctx: ' + JSON.stringify(ctx));
+    LOG.error(
+      'POST /api/register, teacher not found, ctx: ' + JSON.stringify(ctx)
+    );
     throw new AppError(
       `Teacher (email: ${ctx.teacher}) does not exist`,
       StatusCodes.BAD_REQUEST
@@ -62,4 +64,33 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<boolean> => {
   return successCount > 0;
 };
 
-export default { registerStudent };
+const retrieveStudent = async (
+  emails: string[]
+): Promise<RetrieveStudentRes> => {
+  // check if no query
+  if (!emails) {
+    LOG.error('GET /api/commonstudents, query `teacher` not found');
+    throw new AppError(
+      'Query param `teacher` not passed in',
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  // reject if any email is invalid
+  for (const email of emails) {
+    if (!validateEmail(email)) {
+      LOG.error('GET /api/commonstudents, invalid email: ' + email);
+      throw new AppError(
+        `Invalid email provided: ${email}`,
+        StatusCodes.BAD_REQUEST
+      );
+    }
+  }
+  // retrieve students
+  const students = await Student.findAll({
+    where: { status: 'Active' },
+    include: { model: Teacher, where: { email: emails } },
+  });
+  return { students: students.map((student) => student.dataValues.email) };
+};
+
+export default { registerStudent, retrieveStudent };

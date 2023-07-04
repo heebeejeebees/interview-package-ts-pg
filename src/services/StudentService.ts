@@ -14,8 +14,6 @@ import {
   throwNotFoundError,
 } from '../utils/string';
 
-const LOG = new Logger('StudentService.ts');
-
 /**
  * /register API - to register multiple new or existing students under a specified teacher
  * @param {string} ctx.teacher specified teacher
@@ -23,18 +21,19 @@ const LOG = new Logger('StudentService.ts');
  * @returns HTTP 204 if success
  */
 const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
+  const LOG = new Logger('StudentService.ts - POST /api/register');
   // reject first if any email is invalid
   const emails = Object.values(ctx).flat();
   if (emails.length === 0) {
-    throwNotProvidedError(LOG, 'POST /api/register', 'email');
+    throwNotProvidedError(LOG, 'email');
   }
   for (const email of emails) {
     if (!validateEmail(email)) {
-      throwInvalidEmailError(LOG, 'POST /api/register', email);
+      throwInvalidEmailError(LOG, email);
     }
   }
   if (!ctx.teacher) {
-    throwNotProvidedError(LOG, 'POST /api/register', 'teacher email');
+    throwNotProvidedError(LOG, 'teacher email');
   }
   const teacher = await Teacher.findOne({
     where: { email: ctx.teacher },
@@ -42,13 +41,13 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
 
   // check if teacher doesn't exist
   if (teacher === null) {
-    throwNotFoundError(LOG, 'POST /api/register', 'teacher', ctx.teacher);
+    throwNotFoundError(LOG, 'teacher', ctx.teacher);
   }
 
   let successCount = 0;
 
   if (ctx.students.length === 0) {
-    throwNotProvidedError(LOG, 'POST /api/register', 'student emails');
+    throwNotProvidedError(LOG, 'student emails');
   }
 
   for (const email of ctx.students) {
@@ -82,14 +81,15 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
 const retrieveStudent = async (
   emails: string[]
 ): Promise<RetrieveStudentRes> => {
+  const LOG = new Logger('StudentService.ts - GET /api/commonstudents');
   // check if no query
   if (!emails) {
-    throwNotProvidedError(LOG, 'GET /api/commonstudents', 'teacher email(s)');
+    throwNotProvidedError(LOG, 'teacher email(s)');
   }
   // reject if any email is invalid
   for (const email of emails) {
     if (!validateEmail(email)) {
-      throwInvalidEmailError(LOG, 'GET /api/commentstudents', email);
+      throwInvalidEmailError(LOG, email);
     }
   }
   // retrieve students
@@ -106,17 +106,18 @@ const retrieveStudent = async (
  * @returns HTTP 204 if success
  */
 const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
+  const LOG = new Logger('StudentService.ts - POST /api/suspend');
   if (!ctx.student) {
-    throwNotProvidedError(LOG, 'POST /api/suspend', 'student email');
+    throwNotProvidedError(LOG, 'student email');
   }
   if (!validateEmail(ctx.student)) {
-    throwInvalidEmailError(LOG, 'POST /api/suspend', ctx.student);
+    throwInvalidEmailError(LOG, ctx.student);
   }
   const student = await Student.findOne({
     where: { email: ctx.student, status: StudentStatus.ACTIVE },
   });
   if (!student) {
-    throwNotFoundError(LOG, 'POST /api/suspend', 'Active student', ctx.student);
+    throwNotFoundError(LOG, 'Active student', ctx.student);
   }
   await student.update({ status: StudentStatus.SUSPENDED });
   await student.save();

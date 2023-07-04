@@ -1,6 +1,5 @@
 import Express, { RequestHandler, Request, Response } from 'express';
 import { ParsedQs } from 'qs';
-import { StatusCodes } from 'http-status-codes';
 import AppError from '../errors/AppError';
 import StudentService from '../services/StudentService';
 
@@ -12,11 +11,7 @@ const registerStudentHandler: RequestHandler = async (
   res: Response
 ) => {
   try {
-    return res.sendStatus(
-      (await StudentService.registerStudent(req.body))
-        ? StatusCodes.OK
-        : StatusCodes.BAD_REQUEST
-    );
+    return res.sendStatus(await StudentService.registerStudent(req.body));
   } catch (e) {
     if (e instanceof AppError) {
       return res.json(e);
@@ -46,7 +41,21 @@ const retrieveStudentHandler: RequestHandler = async (
   }
 };
 
+const suspendStudentHandler: RequestHandler = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    return res.sendStatus(await StudentService.suspendStudent(req.body));
+  } catch (e) {
+    if (e instanceof AppError) {
+      return res.json(e);
+    }
+  }
+};
+
 StudentController.post('/register', registerStudentHandler);
 StudentController.get('/commonstudents', retrieveStudentHandler);
+StudentController.post('/suspend', suspendStudentHandler);
 
 export default StudentController;

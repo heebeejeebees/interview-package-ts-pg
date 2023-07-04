@@ -4,8 +4,12 @@ export type RegisterStudentReq = {
 };
 
 export type RetrieveStudentReq = string | string[];
-
 export type RetrieveStudentRes = {
   students: string[];
 };
+
+export type SuspendStudentReq = {
+  student: string;
+}
+
 export type StudentStatus = 'Active' | 'Suspended';

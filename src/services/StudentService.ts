@@ -22,7 +22,7 @@ import AppError from '../errors/AppError';
 /**
  * /register API - to register multiple new or existing students under a specified teacher
  * @param {string} ctx.teacher specified teacher
- * @param {Array<string>} ctx.students list of student emails to be registered
+ * @param {string[]} ctx.students list of student emails to be registered
  * @returns HTTP 204 if at least 1 success
  */
 const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
@@ -83,7 +83,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
 
 /**
  * /commonstudents API - to retrieve list of students registered to a given list of teacher(s)
- * @param {Array<string>} emails list of teacher email(s)
+ * @param {string[]} emails list of teacher email(s)
  * @returns list of student emails
  */
 const retrieveStudent = async (

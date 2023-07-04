@@ -10,6 +10,9 @@ export type RetrieveStudentRes = {
 
 export type SuspendStudentReq = {
   student: string;
-}
+};
 
-export type StudentStatus = 'Active' | 'Suspended';
+export enum StudentStatus {
+  ACTIVE = 'Active',
+  SUSPENDED = 'Suspended',
+}

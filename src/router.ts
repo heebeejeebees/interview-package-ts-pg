@@ -4,7 +4,13 @@ import StudentController from './controllers/StudentController';
 
 const router = Express.Router();
 
-router.use('/', HealthcheckController);
-router.use('/', StudentController);
+router.get('/healthcheck', HealthcheckController.healthcheckHandler);
+router.post('/register', StudentController.registerStudentHandler);
+router.get('/commonstudents', StudentController.retrieveStudentHandler);
+router.post('/suspend', StudentController.suspendStudentHandler);
+router.post(
+  '/retrievefornotifications',
+  StudentController.retrieveForNotifsStudentHandler
+);
 
 export default router;

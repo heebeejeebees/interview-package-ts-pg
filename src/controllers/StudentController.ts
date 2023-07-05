@@ -1,9 +1,7 @@
-import Express, { RequestHandler, Request, Response } from 'express';
+import { RequestHandler, Request, Response } from 'express';
 import AppError from '../errors/AppError';
 import StudentService from '../services/StudentService';
 import { transformExpressQueryParamToStringArray } from '../utils/string';
-
-const StudentController = Express.Router();
 
 const registerStudentHandler: RequestHandler = async (
   req: Request,
@@ -61,12 +59,9 @@ const retrieveForNotifsStudentHandler: RequestHandler = async (
   }
 };
 
-StudentController.post('/register', registerStudentHandler);
-StudentController.get('/commonstudents', retrieveStudentHandler);
-StudentController.post('/suspend', suspendStudentHandler);
-StudentController.post(
-  '/retrievefornotifications',
-  retrieveForNotifsStudentHandler
-);
-
-export default StudentController;
+export default {
+  registerStudentHandler,
+  retrieveStudentHandler,
+  suspendStudentHandler,
+  retrieveForNotifsStudentHandler,
+};

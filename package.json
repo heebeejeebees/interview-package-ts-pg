@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is a system which Teachers can perform administrative functions for their students",
   "scripts": {
-    "test": "jest",
+    "test": "jest --setupFiles dotenv/config",
     "build:ts": "tsc",
     "prestart": "npm run start:services",
     "start": "ts-node ./src/server.ts",

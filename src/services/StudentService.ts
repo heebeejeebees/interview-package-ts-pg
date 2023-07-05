@@ -21,9 +21,10 @@ import AppError from '../errors/AppError';
 
 /**
  * /register API - to register multiple new or existing students under a specified teacher
+ * @param {RegisterStudentReq} ctx context of request body
  * @param {string} ctx.teacher specified teacher
  * @param {string[]} ctx.students list of student emails to be registered
- * @returns HTTP 204 if at least 1 success
+ * @returns {Promise<number>} HTTP 204 if at least 1 success
  */
 const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
   const LOG = new Logger('StudentService.ts - POST /api/register');
@@ -84,7 +85,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
 /**
  * /commonstudents API - to retrieve list of students registered to a given list of teacher(s)
  * @param {string[]} emails list of teacher email(s)
- * @returns list of student emails
+ * @returns {Promise<RetrieveStudentRes>} list of student emails
  */
 const retrieveStudent = async (
   emails: string[]
@@ -111,8 +112,9 @@ const retrieveStudent = async (
 
 /**
  * /suspend API - to suspend a specified student
+ * @param {SuspendStudentReq} ctx context of request body
  * @param {string} ctx.student email of student to suspend
- * @returns HTTP 204 if success
+ * @returns {Promise<number>} HTTP 204 if success
  */
 const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
   const LOG = new Logger('StudentService.ts - POST /api/suspend');
@@ -135,9 +137,10 @@ const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
 
 /**
  * /retrievefornotifications API - to retrieve a list of students who can receive a given notification
+ * @param {RetrieveForNotifsStudentReq} ctx context of request body
  * @param {string} ctx.teacher who is sending the notification
  * @param {string} ctx.notification content
- * @returns list of student recipients
+ * @returns {Promise<RetrieveForNotifsStudentRes>} list of student recipients
  */
 const retrieveForNotifsStudent = async (
   ctx: RetrieveForNotifsStudentReq

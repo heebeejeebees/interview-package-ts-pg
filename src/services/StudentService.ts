@@ -11,13 +11,13 @@ import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
 import { StatusCodes } from 'http-status-codes';
 import {
+  throwAndLog,
   throwNotProvidedError,
   throwInvalidEmailError,
   throwNotFoundError,
   extractEmailMentions,
   transformMentionsToEmails,
 } from '../utils/string';
-import AppError from '../errors/AppError';
 
 /**
  * /register API - to register multiple new or existing students under a specified teacher
@@ -79,7 +79,13 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
     }
   }
   // success if at least 1 new student-teacher relationship added
-  return successCount > 0 ? StatusCodes.NO_CONTENT : StatusCodes.BAD_REQUEST;
+  if (successCount === 0) {
+    throwAndLog(
+      LOG,
+      'No students have been newly registered under this teacher'
+    );
+  }
+  return StatusCodes.NO_CONTENT;
 };
 
 /**
@@ -132,7 +138,10 @@ const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
   }
   await student.update({ status: StudentStatus.SUSPENDED });
   await student.save();
-  return student ? StatusCodes.NO_CONTENT : StatusCodes.BAD_REQUEST;
+  if (!student) {
+    throwAndLog(LOG, `Student (email: ${ctx.student}) failed to be suspended`);
+  }
+  return StatusCodes.NO_CONTENT;
 };
 
 /**
@@ -155,10 +164,7 @@ const retrieveForNotifsStudent = async (
   // retrieve all valid emails prefixed with '@'
   const emailMentions = extractEmailMentions(ctx.notification);
   if (emailMentions.length === 0) {
-    LOG.error(
-      'No email was @mentioned in notification content: ' + ctx.notification
-    );
-    throw new AppError('No email was @mentioned in notification content');
+    throwAndLog(LOG, 'No email was @mentioned in notification content: ' + ctx.notification);
   }
   // retrieve students
   const students = await Student.findAll({

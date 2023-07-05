@@ -3,24 +3,30 @@ import AppError from '../errors/AppError';
 import Logger from '../config/logger';
 
 /**
+ * util to log and throw error
+ * @param {Logger} LOG instantiated custom Logger
+ * @param {string} msg message to be logged and thrown
+ */
+export const throwAndLog = (LOG: Logger, msg: string): void => {
+  LOG.error(msg);
+  throw new AppError(msg);
+};
+
+/**
  * util to log and throw error when req param not provided by user
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} param name of param not provided
  */
-export const throwNotProvidedError = (LOG: Logger, param: string): void => {
-  LOG.error(`${param} not provided`);
-  throw new AppError(`${param} not provided`);
-};
+export const throwNotProvidedError = (LOG: Logger, param: string): void =>
+  throwAndLog(LOG, `Param ${param} not provided`);
 
 /**
  * util to log and throw error when email is invalid
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} email address provided
  */
-export const throwInvalidEmailError = (LOG: Logger, email: string): void => {
-  LOG.error(`email invalid: ${email}`);
-  throw new AppError(`Invalid email provided: ${email}`);
-};
+export const throwInvalidEmailError = (LOG: Logger, email: string): void =>
+  throwAndLog(LOG, `Invalid email: ${email}`);
 
 /**
  * util to log and throw error when sequelize model not found
@@ -33,8 +39,7 @@ export const throwNotFoundError = (
   modelName: string,
   email: string
 ): void => {
-  LOG.error(`${modelName} not found, email: ${email}`);
-  throw new AppError(`${modelName} not found, email: ${email}`);
+  throwAndLog(LOG, `Model ${modelName} not found, email: ${email}`);
 };
 
 /**

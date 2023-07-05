@@ -22,6 +22,6 @@ services:
     build: .
     volumes:
       - ./:/Users/javierteo/Documents/Projects/interview-package-ts-pg
-      - ignore:/Users/javierteo/Documents/Projects/interview-package-ts-pg
+      - ignore:/Users/javierteo/Documents/Projects/interview-package-ts-pg/node_modules
 volumes:
   ignore:

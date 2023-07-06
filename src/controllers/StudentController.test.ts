@@ -1,6 +1,6 @@
 import request from 'supertest';
 import App from '../app';
-import { StudentTeacherRelation, Teacher } from '../config/database';
+import { StudentTeacherRelation, Teacher } from '../models';
 // import SequelizeMock from 'sequelize-mock';
 
 /* use sequelize-mock

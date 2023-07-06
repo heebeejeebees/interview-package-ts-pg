@@ -6,7 +6,7 @@ import {
   RetrieveForNotifsStudentReq,
   RetrieveForNotifsStudentRes,
 } from './types';
-import { Student, Teacher, StudentTeacherRelation } from '../config/database';
+import { Student, Teacher, StudentTeacherRelation } from '../models';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
 import { StatusCodes } from 'http-status-codes';

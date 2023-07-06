@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import Logger from './logger';
 
 const LOG = new Logger('database.ts');

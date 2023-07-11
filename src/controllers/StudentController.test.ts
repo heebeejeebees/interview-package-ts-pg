@@ -20,7 +20,7 @@ afterAll(() => {
   jest.resetAllMocks();
 }); */
 
-describe('POST /register', async () => {
+describe('POST /register', () => {
   test('Successful', async () => {
     const mockTeacher = Teacher.build({ email: 'teacher1@email.com' });
     jest

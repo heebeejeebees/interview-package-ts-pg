@@ -1,7 +1,26 @@
-import { DataTypes } from 'sequelize';
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  Model,
+} from 'sequelize';
 import sequelize from '../config/database';
+import { StudentStatus } from './types';
 
-const Student = sequelize.define(
+interface StudentModel
+  extends Model<
+    InferAttributes<StudentModel>,
+    InferCreationAttributes<StudentModel>
+  > {
+  id: CreationOptional<number>;
+  email: string;
+  status: StudentStatus;
+  createdAt: CreationOptional<Date>;
+  updatedAt: CreationOptional<Date>;
+}
+
+const Student = sequelize.define<StudentModel>(
   'Student',
   {
     id: {
@@ -25,4 +44,4 @@ const Student = sequelize.define(
   { freezeTableName: true }
 );
 
-export default Student;
+export { Student, StudentModel };

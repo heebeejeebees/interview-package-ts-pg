@@ -1,8 +1,3 @@
-export enum StudentStatus {
-  ACTIVE = 'Active',
-  SUSPENDED = 'Suspended',
-}
-
 export type RegisterStudentReq = {
   teacher: string;
   students: string[];

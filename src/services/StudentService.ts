@@ -2,11 +2,10 @@ import {
   RegisterStudentReq,
   RetrieveStudentRes,
   SuspendStudentReq,
-  StudentStatus,
   RetrieveForNotifsStudentReq,
   RetrieveForNotifsStudentRes,
 } from './types';
-import { Student, Teacher, StudentTeacherRelation } from '../models';
+import { StudentStatus, Student, Teacher, StudentTeacherRelation } from '../models';
 import { validateEmail } from '../validators/string';
 import Logger from '../config/logger';
 import { StatusCodes } from 'http-status-codes';
@@ -113,7 +112,9 @@ const retrieveStudent = async (
     include: { model: Teacher, where: { email: emails } },
   });
   // if empty, just return empty
-  return { students: students.map((student) => student.dataValues.email) };
+  return {
+    students: students.map((student) => student.dataValues.email),
+  };
 };
 
 /**
@@ -164,7 +165,10 @@ const retrieveForNotifsStudent = async (
   // retrieve all valid emails prefixed with '@'
   const emailMentions = extractEmailMentions(ctx.notification);
   if (emailMentions.length === 0) {
-    throwAndLog(LOG, 'No email was @mentioned in notification content: ' + ctx.notification);
+    throwAndLog(
+      LOG,
+      'No email was @mentioned in notification content: ' + ctx.notification
+    );
   }
   // retrieve students
   const students = await Student.findAll({
@@ -175,7 +179,9 @@ const retrieveForNotifsStudent = async (
     include: { model: Teacher, where: { email: ctx.teacher } },
   });
   // if empty, just return empty
-  return { recipients: students.map((student) => student.dataValues.email) };
+  return {
+    recipients: students.map((student) => student.dataValues.email),
+  };
 };
 
 export default {

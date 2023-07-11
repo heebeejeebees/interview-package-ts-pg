@@ -1,9 +1,25 @@
-import { DataTypes } from 'sequelize';
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  Model,
+} from 'sequelize';
 import sequelize from '../config/database';
-import Student from './student';
-import Teacher from './teacher';
+import { Student } from './Student';
+import { Teacher } from './Teacher';
 
-const StudentTeacherRelation = sequelize.define(
+interface StudentTeacherRelationModel
+  extends Model<
+    InferAttributes<StudentTeacherRelationModel>,
+    InferCreationAttributes<StudentTeacherRelationModel>
+  > {
+  id: CreationOptional<number>;
+  studentId: number;
+  teacherId: number;
+}
+
+const StudentTeacherRelation = sequelize.define<StudentTeacherRelationModel>(
   'StudentTeacherRelation',
   {
     id: {
@@ -30,4 +46,4 @@ const StudentTeacherRelation = sequelize.define(
 Student.belongsToMany(Teacher, { through: StudentTeacherRelation });
 Teacher.belongsToMany(Student, { through: StudentTeacherRelation });
 
-export { StudentTeacherRelation, Student, Teacher };
+export { StudentTeacherRelation, StudentTeacherRelationModel, Student, Teacher };

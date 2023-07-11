@@ -1,7 +1,24 @@
-import { DataTypes } from 'sequelize';
+import {
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
+  CreationOptional,
+  Model,
+} from 'sequelize';
 import sequelize from '../config/database';
 
-const Teacher = sequelize.define(
+interface TeacherModel
+  extends Model<
+    InferAttributes<TeacherModel>,
+    InferCreationAttributes<TeacherModel>
+  > {
+  id: CreationOptional<number>;
+  email: string;
+  createdAt: CreationOptional<Date>;
+  updatedAt: CreationOptional<Date>;
+}
+
+const Teacher = sequelize.define<TeacherModel>(
   'Teacher',
   {
     id: {
@@ -22,4 +39,4 @@ const Teacher = sequelize.define(
   { freezeTableName: true }
 );
 
-export default Teacher;
+export { Teacher, TeacherModel };

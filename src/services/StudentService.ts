@@ -97,7 +97,7 @@ const retrieveStudent = async (
   emails: string[]
 ): Promise<RetrieveStudentRes> => {
   const LOG = new Logger('StudentService.ts - GET /api/commonstudents');
-  // check if no query
+  // check if no emails provided
   if (!emails) {
     throwNotProvidedError(LOG, 'teacher email(s)');
   }
@@ -126,20 +126,26 @@ const retrieveStudent = async (
  */
 const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
   const LOG = new Logger('StudentService.ts - POST /api/suspend');
+  // check if no student provided
   if (!ctx.student) {
     throwNotProvidedError(LOG, 'student email');
   }
+  // check if email valid
   if (!validateEmail(ctx.student)) {
     throwInvalidEmailError(LOG, ctx.student);
   }
+  // get active student to update
   const student = await Student.findOne({
     where: { email: ctx.student, status: StudentStatus.ACTIVE },
   });
+  // check if student exists as active
   if (!student) {
     throwNotFoundError(LOG, 'Active student', ctx.student);
   }
+  // suspend student
   await student.update({ status: StudentStatus.SUSPENDED });
   await student.save();
+  // check internal error
   if (!student) {
     throwAndLog(LOG, `Student (email: ${ctx.student}) failed to be suspended`);
   }

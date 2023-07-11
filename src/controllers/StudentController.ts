@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response } from 'express';
 import AppError from '../errors/AppError';
-import StudentService from '../services/StudentService';
+import * as StudentService from '../services/student';
 import { transformExpressQueryParamToStringArray } from '../utils/string';
 
 const registerStudentHandler: RequestHandler = async (

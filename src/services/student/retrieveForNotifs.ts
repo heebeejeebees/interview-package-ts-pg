@@ -36,7 +36,7 @@ const retrieveForNotifsStudent = async (
   }
   // retrieve all valid emails prefixed with '@'
   const emailMentions = extractEmailMentions(ctx.notification);
-  if (emailMentions.length === 0) {
+  if (!emailMentions || emailMentions.length === 0) {
     throwAndLog(
       LOG,
       'No email was @mentioned in notification content: ' + ctx.notification

@@ -5,7 +5,6 @@ import { validateEmail } from '../../validators/string';
 import Logger from '../../config/logger';
 import { StatusCodes } from 'http-status-codes';
 import {
-  throwAndLog,
   throwNotProvidedError,
   throwInvalidEmailError,
   throwNotFoundError,

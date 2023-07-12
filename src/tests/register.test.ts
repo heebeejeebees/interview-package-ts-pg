@@ -88,19 +88,17 @@ describe('POST /register', () => {
   });
 
   test('Failure', async (done) => {
-    try {
-      await request(App)
-        .post('/api/register')
-        .send({
-          teacher: 'teacher1@email.com',
-          students: ['orphanstudent@email.com'],
-        });
-    } catch (e) {
-      expect(e.httpStatusCode).toBe(400);
-      expect(e.message).toBe(
-        'No students have been newly registered under this teacher'
-      );
-    }
+    const response = await request(App)
+      .post('/api/register')
+      .send({
+        teacher: 'teacher1@email.com',
+        students: ['orphanstudent@email.com'],
+      });
+
+    expect(response.body.httpStatusCode).toBe(400);
+    expect(response.body.message).toBe(
+      'No students have been newly registered under this teacher'
+    );
 
     done();
   });

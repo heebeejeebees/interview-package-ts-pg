@@ -11,7 +11,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // Handling of body-parser content malformed error
   if (err.type === 'entity.parse.failed') {
     return res.status(StatusCodes.BAD_REQUEST).send({
-      message: 'Malformed json',
+      message: 'Malformed JSON',
     });
   }
 

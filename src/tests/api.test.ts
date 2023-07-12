@@ -21,7 +21,7 @@ jest.mock('sequelize', () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             findOne: (options: any) => {
               switch (options.where.email) {
-                case 'teacher1@email.com':
+                case 'teacher2@email.com':
                   return Promise.resolve({ dataValues: { id: 0 } });
                 default:
                   return Promise.resolve(null);
@@ -69,7 +69,7 @@ describe('Undefined parameters', () => {
     test('student emails', async (done) => {
       const response = await request(App)
         .post('/api/register')
-        .send({ teacher: 'teacher1@email.com' });
+        .send({ teacher: 'teacher2@email.com' });
       expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
       expect(response.body.message).toBe('Param student emails not provided');
 

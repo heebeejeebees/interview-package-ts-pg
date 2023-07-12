@@ -10,7 +10,9 @@ import {
   throwNotProvidedError,
   extractEmailMentions,
   transformMentionsToEmails,
+  throwInvalidEmailError,
 } from '../../utils/string';
+import { validateEmail } from '../../validators/string';
 
 const LOG = new Logger('retrieveForNotifs.ts');
 
@@ -27,6 +29,10 @@ const retrieveForNotifsStudent = async (
   // check if notification not provided
   if (!ctx.notification) {
     throwNotProvidedError(LOG, 'notification');
+  }
+  // check if email invalid
+  if (!validateEmail(ctx.teacher)) {
+    throwInvalidEmailError(LOG, ctx.teacher);
   }
   // retrieve all valid emails prefixed with '@'
   const emailMentions = extractEmailMentions(ctx.notification);

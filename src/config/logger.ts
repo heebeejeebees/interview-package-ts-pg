@@ -38,6 +38,7 @@ const appLogger = createLogger({
     customFormat
   ),
   transports: [new transports.Console()],
+  silent: process.argv.indexOf('--silent') >= 0,
 });
 
 class Logger {

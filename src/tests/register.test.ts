@@ -35,7 +35,6 @@ jest.mock('sequelize', () => {
             belongsToMany: jest.fn(),
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             findOrCreate: (options: any) => {
-              console.log('Student: ', options);
               switch (options.where.email) {
                 case mockStudentEmail:
                   return Promise.resolve([mockStudent, true]);
@@ -53,7 +52,6 @@ jest.mock('sequelize', () => {
           return {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             findOrCreate: (options: any) => {
-              console.log('StudentTeacher: ', options);
               switch (options.where.studentId) {
                 case mockId:
                   return Promise.resolve([null, true]);

@@ -44,7 +44,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
     throwNotFoundError(LOG, 'teacher', ctx.teacher);
   }
   // check if student emails not provided
-  if (ctx.students.length === 0) {
+  if (!ctx.students || ctx.students.length === 0) {
     throwNotProvidedError(LOG, 'student emails');
   }
 

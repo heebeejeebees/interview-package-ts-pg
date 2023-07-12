@@ -18,6 +18,7 @@ jest.mock('sequelize', () => {
         case 'Teacher':
           return {
             belongsToMany: jest.fn(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             findOne: (options: any) => {
               switch (options.where.email) {
                 case 'teacher1@email.com':

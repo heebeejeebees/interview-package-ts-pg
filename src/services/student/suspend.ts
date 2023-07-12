@@ -39,10 +39,6 @@ const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
   // suspend student
   await student.update({ status: StudentStatus.SUSPENDED });
   await student.save();
-  // check internal error
-  if (!student) {
-    throwAndLog(LOG, `Student (email: ${ctx.student}) failed to be suspended`);
-  }
   return StatusCodes.NO_CONTENT;
 };
 

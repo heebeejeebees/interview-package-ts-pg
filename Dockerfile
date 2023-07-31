@@ -1,8 +1,9 @@
-FROM node:14
+FROM node:20
 WORKDIR /Users/javierteo/Documents/Projects/interview-package-ts-pg
 
 COPY package.json ./
-RUN npm cache clean --force && npm ci
+COPY package-lock.json ./
+RUN npm ci
 ENV PATH=/Users/javierteo/Documents/Projects/interview-package-ts-pg/node_modules/.bin:$PATH
 
 COPY jest.config.json ./

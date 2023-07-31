@@ -4,7 +4,7 @@
 2. Localise NPM by running `rm package-lock.json` and `npm i`
 
 ## Running project
-Run `npm run start` to start docker services that include both MySQL DB and NodeJS app with hot reload. For first-time runs, run `docker-compose up -d --build` first to build MySQL DB.
+Run `npm run start` to build DB and start docker services of both MySQL DB and NodeJS app with hot reload.
 
 ## Closing project
 Exit node with `Ctrl + C` on node terminal and run `docker-compose down`

@@ -8,7 +8,7 @@ import Logger from '../config/logger';
  * @param {string} msg message to be logged and thrown
  */
 export const throwAndLog = (LOG: Logger, msg: string): void => {
-  LOG.error(msg);
+  LOG.info(msg);
   throw new AppError(msg);
 };
 

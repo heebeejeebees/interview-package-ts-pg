@@ -16,11 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 
   if (err instanceof AppError) {
-    const error = err;
-
-    return res.status(error.getHttpStatusCode()).send({
-      message: error.getMessage(),
-    });
+    return res.status(StatusCodes.NOT_IMPLEMENTED).send(err);
   } else {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
       errorCode: ErrorCodes.RUNTIME_ERROR_CODE,

@@ -8,7 +8,7 @@
     "prestart": "npm run start:build",
     "prestart:dev": "npm run start:services",
     "start": "ts-node ./src/server.ts",
-    "start:build": "docker-compose up -d --build",
+    "start:build": "docker-compose up -d --build --force-recreate",
     "start:services": "docker-compose up -d",
     "start:dev": "nodemon -r dotenv/config src/server.ts",
     "lint": "eslint \"src/**/*.ts\""

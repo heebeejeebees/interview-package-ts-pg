@@ -3,7 +3,7 @@ import AppError from '../errors/AppError';
 import Logger from '../config/logger';
 
 /**
- * util to log and throw error
+ * logs and throws error
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} msg message to be logged and thrown
  */
@@ -13,7 +13,7 @@ export const throwAndLog = (LOG: Logger, msg: string): void => {
 };
 
 /**
- * util to log and throw error when req param not provided by user
+ * logs and throws error when req param not provided by user
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} param name of param not provided
  */
@@ -21,7 +21,7 @@ export const throwNotProvidedError = (LOG: Logger, param: string): void =>
   throwAndLog(LOG, `Param ${param} not provided`);
 
 /**
- * util to log and throw error when email is invalid
+ * logs and throws error when email is invalid
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} email address provided
  */
@@ -29,7 +29,7 @@ export const throwInvalidEmailError = (LOG: Logger, email: string): void =>
   throwAndLog(LOG, `Invalid email: ${email}`);
 
 /**
- * util to log and throw error when sequelize model not found
+ * logs and throws error when sequelize model not found
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} modelName name of model not found
  * @param {string} email used to find this model
@@ -43,8 +43,7 @@ export const throwNotFoundError = (
 };
 
 /**
- * util that expects string(s) passed by user to then
- * transform ExpressJS Query Param to a string array
+ * transforms ExpressJS Query Param to a string array
  * @param queryParam instantiated custom Logger
  * @returns array of 1 or more email strings
  */
@@ -64,19 +63,27 @@ export const transformExpressQueryParamToStringArray = (
 };
 
 /**
- * util to extract '@' mentions on valid email formats
+ * extracts '@' mentions on valid email formats
  * @param {string} content string to extract from
  * @returns array of email strings with '@' prefix
  */
-export const extractEmailMentions = (content: string): string[] =>
+export const getEmailMentions = (content: string): string[] =>
   content.match(
     /\B@(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))+/gi
   );
 
 /**
- * util that removes '@' prefixes on mentions
+ * removes '@' prefixes on mentions
  * @param {string[]} mentions list of strings with '@' prefix
  * @returns list of strings without '@' prefix
  */
 export const transformMentionsToEmails = (mentions: string[]): string[] =>
   mentions.map((mention) => mention.substring(1));
+
+/**
+ * calculates intersection
+ * @param {string[][]} arrays list of string arrays
+ * @returns list of intersection strings
+ */
+export const getIntersection = (arrays: string[][]): string[] =>
+  arrays.reduce((a, b) => a.filter((c) => b.includes(c)));

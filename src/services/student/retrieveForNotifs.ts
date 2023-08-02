@@ -8,7 +8,7 @@ import Logger from '../../config/logger';
 import {
   throwAndLog,
   throwNotProvidedError,
-  extractEmailMentions,
+  getEmailMentions,
   transformMentionsToEmails,
   throwInvalidEmailError,
 } from '../../utils/string';
@@ -35,7 +35,7 @@ const retrieveForNotifsStudent = async (
     throwInvalidEmailError(LOG, ctx.teacher);
   }
   // retrieve all valid emails prefixed with '@'
-  const emailMentions = extractEmailMentions(ctx.notification);
+  const emailMentions = getEmailMentions(ctx.notification);
   if (!emailMentions || emailMentions.length === 0) {
     throwAndLog(
       LOG,

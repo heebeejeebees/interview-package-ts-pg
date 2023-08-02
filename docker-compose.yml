@@ -12,16 +12,3 @@ services:
       - "33306:3306"
     volumes:
       - ./database:/docker-entrypoint-initdb.d:ro
-  app:
-    container_name: tas-app
-    image: app
-    depends_on:
-      - db
-    restart: always
-    env_file: ./.env
-    build: .
-    volumes:
-      - ./:/Users/javierteo/Documents/Projects/interview-package-ts-pg
-      - ignore:/Users/javierteo/Documents/Projects/interview-package-ts-pg/node_modules
-volumes:
-  ignore:

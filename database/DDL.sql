@@ -33,16 +33,19 @@ CREATE TABLE StudentTeacherRelation(
 -- init data
 INSERT INTO Student (id, email) VALUES (1, 'common_student1@gmail.com');
 INSERT INTO Student (id, email) VALUES (2, 'common_student2@gmail.com');
-INSERT INTO Student (id, email) VALUES (3, 'bob_student@gmail.com');
-INSERT INTO Student (id, email) VALUES (4, 'agnes_student@gmail.com');
+INSERT INTO Student (id, email) VALUES (3, 'bob_student1@gmail.com');
+INSERT INTO Student (id, email) VALUES (4, 'bob_student2@gmail.com');
+INSERT INTO Student (id, email) VALUES (5, 'agnes_student1@gmail.com');
+INSERT INTO Student (id, email) VALUES (6, 'agnes_student2@gmail.com');
 
 INSERT INTO Teacher (id, email) VALUES (1, 'teacher_bob@moe.edu.sg');
 INSERT INTO Teacher (id, email) VALUES (2, 'teacher_agnes@moe.edu.sg');
 
 INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (1,1);
 INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (2,1);
+INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (3,1);
+INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (4,1);
 INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (1,2);
 INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (2,2);
-INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (2,1);
-INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (3,1);
-INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (4,2);
+INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (5,2);
+INSERT INTO StudentTeacherRelation (studentId, teacherId) VALUES (6,2);

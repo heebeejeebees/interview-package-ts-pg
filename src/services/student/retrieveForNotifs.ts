@@ -13,6 +13,7 @@ import {
   throwInvalidEmailError,
 } from '../../utils/string';
 import { validateEmail } from '../../validators/string';
+import { Op } from 'sequelize';
 
 const LOG = new Logger('retrieveForNotifs.ts');
 
@@ -42,13 +43,16 @@ const retrieveForNotifsStudent = async (
       'No email was @mentioned in notification content: ' + ctx.notification
     );
   }
-  // retrieve students
+  // retrieve students under teacher or mentioned
   const students = await Student.findAll({
     where: {
-      email: transformMentionsToEmails(emailMentions),
-      status: StudentStatus.ACTIVE,
+      status: { [Op.ne]: StudentStatus.SUSPENDED },
+      [Op.or]: [
+        { email: transformMentionsToEmails(emailMentions) },
+        { '$Teachers.email$': ctx.teacher },
+      ],
     },
-    include: { model: Teacher, where: { email: ctx.teacher } },
+    include: { model: Teacher },
   });
   // if empty, just return empty
   return {

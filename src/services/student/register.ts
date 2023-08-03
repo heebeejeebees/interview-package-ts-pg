@@ -1,6 +1,5 @@
 import { RegisterStudentReq } from '../types';
 import { Student, Teacher, StudentTeacherRelation } from '../../models';
-import { StudentStatus } from '../../models/types';
 import { validateEmail } from '../../validators/string';
 import Logger from '../../config/logger';
 import { StatusCodes } from 'http-status-codes';

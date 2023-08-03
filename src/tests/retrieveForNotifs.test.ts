@@ -28,6 +28,7 @@ jest.mock('sequelize', () => {
   return {
     Sequelize: jest.fn(() => mockSequelize),
     DataTypes: actualSequelize.DataTypes,
+    Op: actualSequelize.Op,
   };
 });
 
@@ -55,7 +56,7 @@ describe('POST /retrievefornotifications', () => {
         teacher: 'teacher1@email.com',
         notification: 'Content without email mentions',
       });
-    expect(response.body.httpStatusCode).toBe(400);
+    expect(response.status).toBe(400);
     expect(response.body.message).toBe(
       'No email was @mentioned in notification content: Content without email mentions'
     );

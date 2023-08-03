@@ -95,7 +95,7 @@ describe('POST /register', () => {
         students: ['orphanstudent@email.com'],
       });
 
-    expect(response.body.httpStatusCode).toBe(400);
+    expect(response.status).toBe(400);
     expect(response.body.message).toBe(
       'No students have been newly registered under this teacher'
     );

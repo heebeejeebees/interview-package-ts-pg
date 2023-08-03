@@ -52,7 +52,7 @@ describe('Undefined parameters', () => {
   describe('POST /register', () => {
     test('email', async (done) => {
       const response = await request(App).post('/api/register').send();
-      expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+      expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
       expect(response.body.message).toBe('Param email not provided');
 
       done();
@@ -61,7 +61,7 @@ describe('Undefined parameters', () => {
       const response = await request(App)
         .post('/api/register')
         .send({ students: ['student1@email.com'] });
-      expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+      expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
       expect(response.body.message).toBe('Param teacher email not provided');
 
       done();
@@ -70,7 +70,7 @@ describe('Undefined parameters', () => {
       const response = await request(App)
         .post('/api/register')
         .send({ teacher: 'teacher2@email.com' });
-      expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+      expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
       expect(response.body.message).toBe('Param student emails not provided');
 
       done();
@@ -79,7 +79,7 @@ describe('Undefined parameters', () => {
 
   test('GET /commonstudents', async (done) => {
     const response = await request(App).get('/api/commonstudents').send();
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe('Param teacher email(s) not provided');
 
     done();
@@ -87,7 +87,7 @@ describe('Undefined parameters', () => {
 
   test('POST /suspend', async (done) => {
     const response = await request(App).post('/api/suspend').send();
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe('Param student email not provided');
 
     done();
@@ -97,7 +97,7 @@ describe('Undefined parameters', () => {
     const response = await request(App)
       .post('/api/retrievefornotifications')
       .send();
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe('Param notification not provided');
 
     done();
@@ -112,7 +112,7 @@ describe('Invalid email parameters', () => {
     const response = await request(App)
       .post('/api/register')
       .send({ teacher: invalidEmail });
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(INVALID_MESSAGE_RESPONSE);
 
     done();
@@ -122,7 +122,7 @@ describe('Invalid email parameters', () => {
     const response = await request(App)
       .get('/api/commonstudents?teacher=' + invalidEmail)
       .send();
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(INVALID_MESSAGE_RESPONSE);
 
     done();
@@ -132,7 +132,7 @@ describe('Invalid email parameters', () => {
     const response = await request(App)
       .post('/api/suspend')
       .send({ student: invalidEmail });
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(INVALID_MESSAGE_RESPONSE);
 
     done();
@@ -145,7 +145,7 @@ describe('Invalid email parameters', () => {
         teacher: invalidEmail,
         notification: 'Content without email mentions',
       });
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(INVALID_MESSAGE_RESPONSE);
 
     done();
@@ -160,7 +160,7 @@ describe('No record found', () => {
     const response = await request(App)
       .post('/api/register')
       .send({ teacher: mockTeacherEmail });
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(
       'Model teacher not found, email: ' + mockTeacherEmail
     );
@@ -182,7 +182,7 @@ describe('No record found', () => {
     const response = await request(App)
       .post('/api/suspend')
       .send({ student: mockStudentEmail });
-    expect(response.body.httpStatusCode).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
+    expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(
       'Model Active student not found, email: ' + mockStudentEmail
     );

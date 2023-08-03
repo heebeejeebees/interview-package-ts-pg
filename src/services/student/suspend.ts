@@ -8,6 +8,7 @@ import {
   throwNotProvidedError,
   throwInvalidEmailError,
   throwNotFoundError,
+  throwAndLog,
 } from '../../utils/string';
 
 const LOG = new Logger('suspend.ts');
@@ -29,11 +30,15 @@ const suspendStudent = async (ctx: SuspendStudentReq): Promise<number> => {
   }
   // get active student to update
   const student = await Student.findOne({
-    where: { email: ctx.student, status: StudentStatus.ACTIVE },
+    where: { email: ctx.student },
   });
   // check if student exists as active
   if (!student) {
     throwNotFoundError(LOG, 'Active student', ctx.student);
+  }
+  // check if student already suspended
+  if (student.dataValues.status === StudentStatus.SUSPENDED) {
+    throwAndLog(LOG, `Student ${ctx.student} already suspended`);
   }
   // suspend student
   await student.update({ status: StudentStatus.SUSPENDED });

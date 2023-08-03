@@ -39,7 +39,7 @@ export const throwNotFoundError = (
   modelName: string,
   email: string
 ): void => {
-  throwAndLog(LOG, `Model ${modelName} not found, email: ${email}`);
+  throwAndLog(LOG, `${modelName} not found, email: ${email}`);
 };
 
 /**

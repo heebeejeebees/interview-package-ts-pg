@@ -12,6 +12,7 @@ jest.mock('sequelize', () => {
         case 'Student':
           return {
             belongsToMany: jest.fn(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             findOne: (options: any) =>
               Promise.resolve({
                 update: jest.fn(),

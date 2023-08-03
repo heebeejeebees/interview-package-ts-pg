@@ -1,5 +1,6 @@
 import request from 'supertest';
 import App from '../app';
+import { StudentStatus } from '../models/types';
 
 // mock sequelize connectsion
 jest.mock('sequelize', () => {
@@ -12,7 +13,11 @@ jest.mock('sequelize', () => {
           return {
             belongsToMany: jest.fn(),
             findOne: () =>
-              Promise.resolve({ update: jest.fn(), save: jest.fn() }),
+              Promise.resolve({
+                update: jest.fn(),
+                save: jest.fn(),
+                dataValues: { status: StudentStatus.ACTIVE },
+              }),
           };
         case 'Teacher':
           return {
@@ -39,11 +44,9 @@ afterEach((done) => {
 
 describe('POST /suspend', () => {
   test('Successful', async (done) => {
-    const response = await request(App)
-      .post('/api/suspend')
-      .send({
-        student: 'student1@email.com',
-      });
+    const response = await request(App).post('/api/suspend').send({
+      student: 'student1@email.com',
+    });
     expect(response.status).toBe(204);
 
     done();

@@ -54,10 +54,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
   for (const email of ctx.students) {
     // register new and existing student
     const [student] = await Student.findOrCreate({
-      where: {
-        email,
-        status: StudentStatus.ACTIVE,
-      },
+      where: { email },
     });
     // register student under teacher
     const [, created] = await StudentTeacherRelation.findOrCreate({

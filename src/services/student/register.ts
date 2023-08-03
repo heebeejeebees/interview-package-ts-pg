@@ -40,7 +40,7 @@ const registerStudent = async (ctx: RegisterStudentReq): Promise<number> => {
 
   // check if teacher doesn't exist
   if (teacher === null) {
-    throwNotFoundError(LOG, 'teacher', ctx.teacher);
+    throwNotFoundError(LOG, 'Teacher', ctx.teacher);
   }
   // check if student emails not provided
   if (!ctx.students || ctx.students.length === 0) {

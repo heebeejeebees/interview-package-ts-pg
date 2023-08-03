@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "This is a system which Teachers can perform administrative functions for their students",
   "scripts": {
-    "test": "jest --silent",
+    "test": "jest --silent --coverage",
     "build:ts": "tsc",
     "prestart": "npm run start:build",
     "prestart:dev": "npm run start:services",

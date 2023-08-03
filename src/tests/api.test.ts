@@ -38,6 +38,7 @@ jest.mock('sequelize', () => {
   return {
     Sequelize: jest.fn(() => mockSequelize),
     DataTypes: actualSequelize.DataTypes,
+    Op: actualSequelize.Op,
   };
 });
 
@@ -162,7 +163,7 @@ describe('No record found', () => {
       .send({ teacher: mockTeacherEmail });
     expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(
-      'Model teacher not found, email: ' + mockTeacherEmail
+      'Teacher not found, email: ' + mockTeacherEmail
     );
 
     done();
@@ -184,7 +185,7 @@ describe('No record found', () => {
       .send({ student: mockStudentEmail });
     expect(response.status).toBe(BAD_REQUEST_HTTP_STATUS_CODE);
     expect(response.body.message).toBe(
-      'Model Active student not found, email: ' + mockStudentEmail
+      'Active student not found, email: ' + mockStudentEmail
     );
 
     done();

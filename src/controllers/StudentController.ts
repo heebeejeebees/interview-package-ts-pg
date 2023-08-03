@@ -12,7 +12,7 @@ const registerStudentHandler: RequestHandler = async (
     return res.sendStatus(await StudentService.registerStudent(req.body));
   } catch (e) {
     if (e instanceof AppError) {
-      return res.status(StatusCodes.BAD_REQUEST).json(e);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
     }
   }
 };
@@ -29,7 +29,7 @@ const retrieveStudentHandler: RequestHandler = async (
     );
   } catch (e) {
     if (e instanceof AppError) {
-      return res.status(StatusCodes.BAD_REQUEST).json(e);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
     }
   }
 };
@@ -42,7 +42,7 @@ const suspendStudentHandler: RequestHandler = async (
     return res.sendStatus(await StudentService.suspendStudent(req.body));
   } catch (e) {
     if (e instanceof AppError) {
-      return res.status(StatusCodes.BAD_REQUEST).json(e);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
     }
   }
 };
@@ -55,7 +55,7 @@ const retrieveForNotifsStudentHandler: RequestHandler = async (
     return res.send(await StudentService.retrieveForNotifsStudent(req.body));
   } catch (e) {
     if (e instanceof AppError) {
-      return res.status(StatusCodes.BAD_REQUEST).json(e);
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(e);
     }
   }
 };

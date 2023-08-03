@@ -12,11 +12,16 @@ jest.mock('sequelize', () => {
         case 'Student':
           return {
             belongsToMany: jest.fn(),
-            findOne: () =>
+            findOne: (options: any) =>
               Promise.resolve({
                 update: jest.fn(),
                 save: jest.fn(),
-                dataValues: { status: StudentStatus.ACTIVE },
+                dataValues: {
+                  status:
+                    options.where.email === 'student1@email.com'
+                      ? StudentStatus.ACTIVE
+                      : StudentStatus.SUSPENDED,
+                },
               }),
           };
         case 'Teacher':
@@ -48,6 +53,14 @@ describe('POST /suspend', () => {
       student: 'student1@email.com',
     });
     expect(response.status).toBe(204);
+
+    done();
+  });
+  test('Already suspended', async (done) => {
+    const response = await request(App).post('/api/suspend').send({
+      student: 'student2@email.com',
+    });
+    expect(response.status).toBe(400);
 
     done();
   });

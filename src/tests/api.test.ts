@@ -1,6 +1,10 @@
 import request from 'supertest';
 import App from '../app';
 
+/** 
+ * for testing same logic across all APIs
+*/
+
 // mock sequelize connectsion
 jest.mock('sequelize', () => {
   const actualSequelize = jest.requireActual('sequelize');

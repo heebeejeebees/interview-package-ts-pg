@@ -7,9 +7,13 @@ import Logger from '../config/logger';
  * @param {Logger} LOG instantiated custom Logger
  * @param {string} msg message to be logged and thrown
  */
-export const throwAndLog = (LOG: Logger, msg: string): void => {
+export const throwAndLog = (
+  LOG: Logger,
+  msg: string,
+  httpStatusCode?: number
+): void => {
   LOG.info(msg);
-  throw new AppError(msg);
+  throw new AppError(msg, httpStatusCode);
 };
 
 /**
